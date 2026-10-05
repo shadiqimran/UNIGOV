@@ -44,6 +44,7 @@ public class SecurityConfig {
                 java.util.List.of(
                         "http://localhost:3000",
                         "http://localhost:3001",
+                        "https://unigov-zeta.vercel.app",
                         "https://unigov-zeta.vercel.app"
                 )
         );
