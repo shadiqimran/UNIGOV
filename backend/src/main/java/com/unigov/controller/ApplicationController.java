@@ -1,11 +1,14 @@
 package com.unigov.controller;
 
+import com.unigov.dto.ApplicationCreateRequest;
+import com.unigov.dto.ApplicationCreateResponse;
 import com.unigov.dto.ApplicationResponse;
 import com.unigov.dto.ApplicationStepResponse;
 import com.unigov.entity.Application;
 import com.unigov.service.ApplicationService;
 import com.unigov.service.ApplicationStepService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +27,26 @@ public class ApplicationController {
         this.applicationStepService = applicationStepService;
     }
 
+    @PostMapping
+    public ResponseEntity<ApplicationCreateResponse> createApplication(
+            @RequestBody ApplicationCreateRequest request,
+            Authentication authentication
+    ) {
+
+        String email = authentication.getName();
+
+        Long citizenId = applicationService
+                .getUserIdByEmail(email);
+
+        ApplicationCreateResponse response =
+                applicationService.createApplication(
+                        citizenId,
+                        request
+                );
+
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping
     public List<ApplicationResponse> getAllApplications() {
         return applicationService.getAllApplications()
@@ -36,9 +59,10 @@ public class ApplicationController {
     public ResponseEntity<ApplicationResponse> getApplication(
             @PathVariable Long id) {
 
-        return applicationService.getApplicationById(id)
-                .map(application -> ResponseEntity.ok(toResponse(application)))
-                .orElse(ResponseEntity.notFound().build());
+        Application application =
+                applicationService.getApplicationById(id);
+
+        return ResponseEntity.ok(toResponse(application));
     }
 
     @GetMapping("/citizen/{citizenId}")
