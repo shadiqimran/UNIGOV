@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 
@@ -25,6 +26,26 @@ public class GlobalExceptionHandler {
         );
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<ApiErrorResponse> handleResponseStatus(
+            ResponseStatusException exception,
+            HttpServletRequest request) {
+
+        int status = exception.getStatusCode().value();
+
+        ApiErrorResponse response = new ApiErrorResponse(
+                LocalDateTime.now(),
+                status,
+                exception.getStatusCode().toString(),
+                exception.getReason(),
+                request.getRequestURI()
+        );
+
+        return ResponseEntity
+                .status(status)
+                .body(response);
     }
 
     @ExceptionHandler(Exception.class)
