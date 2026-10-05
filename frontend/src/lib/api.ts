@@ -40,3 +40,21 @@ export async function apiFetch<T>(
 export function getApiBaseUrl() {
   return API_BASE_URL;
 }
+
+export type AuditLog = {
+  id: number;
+  userId: number | null;
+  applicationId: number | null;
+  departmentId: number | null;
+  departmentName: string | null;
+  action: string;
+  resourceType: string;
+  resourceId: string | null;
+  status: string;
+  details: string | null;
+  createdAt: string;
+};
+
+export async function getAuditLogs(token: string) {
+  return apiFetch<AuditLog[]>("/api/admin/audit-logs", { token });
+}
