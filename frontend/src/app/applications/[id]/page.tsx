@@ -268,11 +268,28 @@ export default function ApplicationDetailPage() {
           <div className="ug-card p-5">
             <p className="text-xs text-slate-500">Last updated</p>
             <p className="mt-1 text-sm font-semibold text-slate-900">
-              {new Date(application.completedAt ?? application.submittedAt ?? "").toLocaleString()}
+              {formatDate(
+                application.completedAt ?? application.submittedAt
+              )}
             </p>
           </div>
         </div>
       </section>
     </main>
   );
+}
+
+function formatDate(value: string | null) {
+  if (!value) return "Not available";
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return "Not available";
+  }
+
+  return date.toLocaleString("en-IN", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
 }
