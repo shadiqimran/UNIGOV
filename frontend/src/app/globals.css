@@ -138,3 +138,9 @@ a {
   outline: 3px solid rgb(59 130 246 / 0.25);
   outline-offset: 2px;
 }
+
+
+/* UNIGOV button visibility fix */
+button {
+  color: inherit;
+}

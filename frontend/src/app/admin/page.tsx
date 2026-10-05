@@ -285,7 +285,7 @@ export default function AdminDashboardPage() {
 
             <Link
               href="/admin/integrations"
-              className="mt-5 block rounded-xl bg-slate-900 px-4 py-3 text-center text-xs font-semibold text-white hover:bg-slate-800"
+              className="mt-5 block rounded-xl bg-slate-900 px-4 py-3 text-center text-xs font-semibold !text-white hover:bg-slate-800"
             >
               Integration controls
             </Link>
