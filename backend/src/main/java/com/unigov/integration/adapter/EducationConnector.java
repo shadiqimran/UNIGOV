@@ -19,7 +19,7 @@ public class EducationConnector implements DepartmentConnector {
     public VerificationResult verify(String citizenId) {
 
         Map<?, ?> response = restClient.post()
-                .uri("http://localhost:8080/mock-gov/education/student-check")
+                .uri("http://localhost:${PORT:8080}/mock-gov/education/student-check")
                 .body(Map.of(
                         "student_identifier", citizenId
                 ))

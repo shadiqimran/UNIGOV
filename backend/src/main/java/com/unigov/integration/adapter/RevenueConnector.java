@@ -19,7 +19,7 @@ public class RevenueConnector implements DepartmentConnector {
     public VerificationResult verify(String citizenId) {
 
         Map<?, ?> response = restClient.post()
-                .uri("http://localhost:8080/mock-gov/revenue/income-check")
+                .uri("http://localhost:${PORT:8080}/mock-gov/revenue/income-check")
                 .body(Map.of(
                         "citizen_identifier", citizenId
                 ))

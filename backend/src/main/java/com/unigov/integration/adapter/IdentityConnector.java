@@ -19,7 +19,7 @@ public class IdentityConnector implements DepartmentConnector {
     public VerificationResult verify(String citizenId) {
 
         Map<?, ?> response = restClient.post()
-                .uri("http://localhost:8080/mock-gov/identity/verify")
+                .uri("http://localhost:${PORT:8080}/mock-gov/identity/verify")
                 .body(Map.of(
                         "full_name", "Demo Citizen",
                         "mobile_number", "9876543210"

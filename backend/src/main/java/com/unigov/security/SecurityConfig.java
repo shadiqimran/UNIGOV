@@ -43,7 +43,8 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(
                 java.util.List.of(
                         "http://localhost:3000",
-                        "http://localhost:3001"
+                        "http://localhost:3001",
+                        "https://unigov-zeta.vercel.app"
                 )
         );
 
