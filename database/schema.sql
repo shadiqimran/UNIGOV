@@ -271,3 +271,85 @@ CREATE INDEX idx_application_steps_application
 
 CREATE INDEX idx_application_steps_status
     ON application_steps(status);
+-- ============================================================
+-- CONSENT MANAGEMENT
+-- ============================================================
+
+CREATE TABLE consents (
+    id BIGSERIAL PRIMARY KEY,
+    citizen_id BIGINT NOT NULL,
+    department_id BIGINT NOT NULL,
+    service_id BIGINT,
+    purpose VARCHAR(255) NOT NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'GRANTED',
+    granted_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    revoked_at TIMESTAMP,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_consents_citizen
+        FOREIGN KEY (citizen_id) REFERENCES users(id),
+
+    CONSTRAINT fk_consents_department
+        FOREIGN KEY (department_id) REFERENCES departments(id),
+
+    CONSTRAINT fk_consents_service
+        FOREIGN KEY (service_id) REFERENCES services(id),
+
+    CONSTRAINT chk_consents_status
+        CHECK (status IN ('GRANTED', 'REVOKED'))
+);
+
+CREATE INDEX idx_consents_citizen
+    ON consents(citizen_id);
+
+CREATE INDEX idx_consents_department
+    ON consents(department_id);
+
+CREATE INDEX idx_consents_status
+    ON consents(status);
+
+
+-- ============================================================
+-- AUDIT LOGGING
+-- ============================================================
+
+CREATE TABLE audit_logs (
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT,
+    application_id BIGINT,
+    department_id BIGINT,
+    action VARCHAR(100) NOT NULL,
+    resource_type VARCHAR(100),
+    resource_id VARCHAR(100),
+    status VARCHAR(20) NOT NULL,
+    details TEXT,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_audit_user
+        FOREIGN KEY (user_id) REFERENCES users(id),
+
+    CONSTRAINT fk_audit_application
+        FOREIGN KEY (application_id) REFERENCES applications(id),
+
+    CONSTRAINT fk_audit_department
+        FOREIGN KEY (department_id) REFERENCES departments(id),
+
+    CONSTRAINT chk_audit_status
+        CHECK (status IN ('SUCCESS', 'FAILURE', 'INFO'))
+);
+
+CREATE INDEX idx_audit_user
+    ON audit_logs(user_id);
+
+CREATE INDEX idx_audit_application
+    ON audit_logs(application_id);
+
+CREATE INDEX idx_audit_department
+    ON audit_logs(department_id);
+
+CREATE INDEX idx_audit_action
+    ON audit_logs(action);
+
+CREATE INDEX idx_audit_created_at
+    ON audit_logs(created_at);
