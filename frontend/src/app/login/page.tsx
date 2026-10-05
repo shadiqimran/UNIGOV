@@ -100,6 +100,62 @@ export default function LoginPage() {
                 </p>
               </div>
 
+              <div className="mt-7 rounded-2xl border border-blue-100 bg-blue-50/70 p-4">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-sm font-semibold text-slate-900">
+                      Explore the prototype
+                    </p>
+                    <p className="mt-1 text-xs leading-5 text-slate-500">
+                      Use a demo account to explore UNIGOV without creating an account.
+                    </p>
+                  </div>
+                  <span className="rounded-full bg-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-blue-700">
+                    Demo
+                  </span>
+                </div>
+
+                <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEmail("citizen@unigov.demo");
+                      setPassword("Citizen@123");
+                      setError("");
+                    }}
+                    className="rounded-xl border border-blue-200 bg-white px-4 py-3 text-left transition hover:border-blue-400 hover:bg-blue-50"
+                  >
+                    <span className="block text-sm font-semibold text-slate-900">
+                      Citizen Demo
+                    </span>
+                    <span className="mt-1 block text-xs text-slate-500">
+                      Services, applications & tracking
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEmail("admin@unigov.demo");
+                      setPassword("Admin@123");
+                      setError("");
+                    }}
+                    className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-left transition hover:border-slate-400 hover:bg-slate-50"
+                  >
+                    <span className="block text-sm font-semibold text-slate-900">
+                      Admin Demo
+                    </span>
+                    <span className="mt-1 block text-xs text-slate-500">
+                      Monitoring, integrations & audit logs
+                    </span>
+                  </button>
+                </div>
+
+                <p className="mt-3 text-[11px] text-slate-400">
+                  Click a role to automatically fill the demo credentials.
+                </p>
+              </div>
+
               <form onSubmit={handleSubmit} className="mt-8 space-y-5">
                 <div>
                   <label

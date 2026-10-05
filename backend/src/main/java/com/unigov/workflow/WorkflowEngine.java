@@ -207,23 +207,46 @@ public class WorkflowEngine {
 
         return switch (workflowStep.getCode()) {
 
-            case "IDENTITY_VERIFICATION" ->
+            case "IDENTITY_VERIFICATION",
+                 "IDENTITY_VERIFY" ->
                     identityConnector.verify(citizenId);
 
-            case "INCOME_VERIFICATION" ->
+            case "INCOME_VERIFICATION",
+                 "INCOME_VERIFY",
+                 "INCOME_DATA_VERIFY" ->
                     revenueConnector.verify(citizenId);
 
-            case "EDUCATION_VERIFICATION" ->
+            case "EDUCATION_VERIFICATION",
+                 "EDUCATION_VERIFY",
+                 "EDUCATION_DATA_VERIFY" ->
                     educationConnector.verify(citizenId);
 
-            default ->
-                    new VerificationResult(
-                            false,
-                            workflowStep.getName(),
-                            null,
-                            "No connector configured for workflow step: "
-                                    + workflowStep.getCode()
-                    );
+            default -> {
+                String departmentCode =
+                        workflowStep.getDepartment() != null
+                                ? workflowStep.getDepartment().getCode()
+                                : "";
+
+                yield switch (departmentCode) {
+                    case "IDN" ->
+                            identityConnector.verify(citizenId);
+
+                    case "REV" ->
+                            revenueConnector.verify(citizenId);
+
+                    case "EDU" ->
+                            educationConnector.verify(citizenId);
+
+                    default ->
+                            new VerificationResult(
+                                    false,
+                                    workflowStep.getName(),
+                                    null,
+                                    "No connector configured for department: "
+                                            + departmentCode
+                            );
+                };
+            }
         };
     }
 

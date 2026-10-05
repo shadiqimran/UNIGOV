@@ -151,7 +151,7 @@ export default function DashboardPage() {
               </div>
 
               <Link
-                href="/applications"
+                href="/applications/my"
                 className="text-sm font-semibold text-blue-700 hover:text-blue-800"
               >
                 View all
